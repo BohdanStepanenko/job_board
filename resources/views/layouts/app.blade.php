@@ -79,6 +79,7 @@
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('user', Auth::user()->id) }}">{{ __('Profile') }}</a>
+                                    <a class="dropdown-item" href="{{ route('likes-list', Auth::user()->id) }}">{{ __('Favorite') }}</a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

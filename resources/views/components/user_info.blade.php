@@ -11,8 +11,14 @@
                 <p class="card-text">{{ $user->email }}</p>
 
                 @auth
-                {{-- TODO: Realize like checkbox --}}
-                <a href="#" class="btn btn-danger">Like!</a>
+                    <form method="POST" action="{{ route('set-like') }}">
+                        @csrf
+                        <input type="hidden" name="liked_type" value="{{ get_class($user) }}"/>
+                        <input type="hidden" name="liked_id" value="{{ $user->id }}"/>
+                        <input type="submit" class="btn btn-danger" value="Like!">
+                    </form>
+
+                    <a href="{{ route('delete-like', ['liked_type' => get_class($user), 'liked_id' => $user->id]) }}" class="btn btn-warning">Unlike</a>
                 @endauth
             </div>
         </div>

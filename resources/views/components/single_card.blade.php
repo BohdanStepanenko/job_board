@@ -18,9 +18,14 @@
                 <a href="{{ route ('edit-vacancy', $vacancy->id) }}" class="btn btn-primary">Update</a>
                 <a href="{{ route ('delete-vacancy', $vacancy->id) }}" class="btn btn-danger">Delete</a>
             @else
-                {{-- TODO: Realize like checkbox --}}
-                <a href="#" class="btn btn-danger">Like!</a>
-                <a href="{{ route('send-response', $vacancy->id) }}" class="btn btn-success">Send response</a>
+                <form method="POST" action="{{ route('set-like') }}">
+                    @csrf
+                    <input type="hidden" name="liked_type" value="{{ get_class($vacancy) }}"/>
+                    <input type="hidden" name="liked_id" value="{{ $vacancy->id }}"/>
+                    <input type="submit" class="btn btn-danger" value="Like!">
+                </form>
+
+                <a href="{{ route('delete-like', ['liked_type' => get_class($vacancy), 'liked_id' => $vacancy->id]) }}" class="btn btn-warning">Unlike</a>
             @endif
         </div>
     @endauth
