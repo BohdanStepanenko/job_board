@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\JobVacancyController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\ResponseController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
@@ -23,4 +24,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/response/{vacancy_id}', [ResponseController::class, 'sendResponse'])->name('send-response');
     Route::get('/delete-response/{response_id}', [ResponseController::class, 'deleteResponse'])->name('delete-response');
+
+    Route::get('/liked-list', [LikeController::class, 'getLiked'])->name('likes-list');
+    Route::post('/like', [LikeController::class, 'setLike'])->name('set-like');
+    Route::get('/unlike/{liked_type}/{liked_id}', [LikeController::class, 'deleteLike'])->name('delete-like');
 });
