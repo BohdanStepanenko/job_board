@@ -57,6 +57,11 @@ class User extends Authenticatable
         return $this->hasOne(Coin::class);
     }
 
+    public function like()
+    {
+        return $this->belongsTo(Like::class);
+    }
+
     public function liked()
     {
         return $this->morphMany(Like::class, 'liked');

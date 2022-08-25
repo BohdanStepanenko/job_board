@@ -10,6 +10,9 @@ class Like extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
+        'liked_type',
+        'liked_id',
         'created_at',
         'updated_at',
     ];
@@ -19,7 +22,7 @@ class Like extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function jobVacancies()
+    public function jobVacancy()
     {
         return $this->belongsTo(JobVacancy::class);
     }

@@ -18,9 +18,14 @@ class JobVacancy extends Model
         'updated_at',
     ];
 
-    public function likes()
+    public function liked()
     {
         return $this->morphMany(Like::class, 'liked');
+    }
+
+    public function like()
+    {
+        return $this->belongsTo(Like::class);
     }
 
     public function user()
