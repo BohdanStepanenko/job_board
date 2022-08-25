@@ -19,6 +19,8 @@ return new class extends Migration
             $table->foreignId('job_vacancy_id');
             $table->timestamps();
 
+            $table->index(['user_id', 'job_vacancy_id']);
+
             $table
                 ->foreign('user_id')
                 ->references('id')

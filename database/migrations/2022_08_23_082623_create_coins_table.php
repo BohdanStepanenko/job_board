@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('coins', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
-            $table->integer('count');
+            $table->unsignedInteger('count');
             $table->timestamps();
 
             $table
