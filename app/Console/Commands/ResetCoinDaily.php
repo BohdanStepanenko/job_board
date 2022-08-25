@@ -19,17 +19,22 @@ class ResetCoinDaily extends Command
      *
      * @var string
      */
-    protected $description = 'Reset users coins count to default value';
+    protected $description = 'Add users daily coins count';
 
     /**
      * Execute the console command.
-     *
-     * @return int
      */
     public function handle()
     {
-        Coin::query()->update(['count' => 5]);
+        $coins_to_update = Coin::where('count', '<', config('pricing.coins.max_count'))->pluck('count');
 
-        $this->info('Coins count has been successfully reset to default value');
+        foreach ($coins_to_update as $count)
+        {
+            $add_value = $count < 4 ? config('pricing.coins.daily_add') : 1;
+
+            Coin::where('count', $count)->update(['count' => $count + $add_value]);
+        }
+
+        $this->info('Coins count has been successfully added');
     }
 }
