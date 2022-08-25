@@ -18,7 +18,6 @@ class LikeFactory extends Factory
     {
         return [
             'user_id' => 1,
-            'is_liked' => fake()->boolean(),
         ];
     }
 }
