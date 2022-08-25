@@ -7,6 +7,7 @@ use App\Models\JobVacancy;
 use App\Http\Requests\CreateVacancyRequest;
 use App\Http\Requests\UpdateVacancyRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Cache\RateLimiter;
 
 class JobVacancyController extends Controller
 {
@@ -32,12 +33,22 @@ class JobVacancyController extends Controller
         return view('pages.create_vacancy');
     }
 
-    public function storeVacancy(CreateVacancyRequest $request)
+    public function storeVacancy(CreateVacancyRequest $request, RateLimiter $limiter)
     {
         $coins = Coin::where('user_id', '=', Auth::user()->id)->first();
 
-        if ($coins >= config('pricing.coins.post_price'))
+        if ($coins->count >= config('pricing.coins.post_price'))
         {
+            // Create a key to identify the rate limiter for the user.
+            $key = Auth::user()->id . ':post_vacancy';
+
+            // Check if the user post more than 2 vacancies.
+            if ($limiter->tooManyAttempts($key, config('pricing.coins.post_per_day'))) {
+                $availableAt = now()->addSeconds($limiter->availableIn($key))->ago();
+
+                return redirect()->route('create-vacancy')->withErrors( 'You`ve already post' . config('pricing.coins.post_per_day') . 'vacancies today. Try again '. $availableAt);
+            }
+
             JobVacancy::create([
                 'user_id' => Auth::user()->id,
                 'title' => $request->title,
@@ -47,9 +58,11 @@ class JobVacancyController extends Controller
             Coin::find($coins->id)->update([
                 'count' => $coins->count - config('pricing.coins.post_price'),
             ]);
+
+            return redirect()->route('all-vacancies');
         }
 
-        return redirect()->route('all-vacancies');
+        return redirect()->route('create-vacancy')->withErrors( 'Insufficient funds');
     }
 
     public function editVacancy(int $vacancy_id)
