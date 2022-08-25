@@ -10,12 +10,11 @@ class Like extends Model
     use HasFactory;
 
     protected $fillable = [
-        'is_liked',
         'created_at',
         'updated_at',
     ];
 
-    public function users()
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
