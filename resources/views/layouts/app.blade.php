@@ -27,6 +27,24 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
+                <!-- Navbar -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="{{ route('all-vacancies') }}">Job vacancies</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="{{ route('all-users') }}">Users</a>
+                        </li>
+
+                        @auth
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('create-vacancy') }}"> + Create vacancy</a>
+                        </li>
+                        @endauth
+                    </ul>
+                </div>
+
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
@@ -49,12 +67,18 @@
                                 </li>
                             @endif
                         @else
+                            <li class="nav-item">
+                                <span class="nav-link" href="#">
+                                    Coins on balance: {{ \App\Models\User::find(Auth::user()->id)->coin->count }}
+                                </span>
+                            </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
+                                    <b>{{ Auth::user()->name }}</b>
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('user', Auth::user()->id) }}">{{ __('Profile') }}</a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
