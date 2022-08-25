@@ -10,16 +10,18 @@ class Response extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
+        'job_vacancy_id',
         'created_at',
         'updated_at',
     ];
 
-    public function users()
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function jobVacancies()
+    public function jobVacancy()
     {
         return $this->belongsTo(JobVacancy::class);
     }
